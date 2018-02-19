@@ -659,7 +659,7 @@
         "typeHandlerVersion": "1.2",
         "settings": {
           "fileUris": [
-            "https://raw.githubusercontent.com/d-apurva/ARM-for-Container-Service/master/docker-swarm/installer.sh"
+            "https://raw.githubusercontent.com/d-apurva/Container-Service-ARMTemplate/master/installer.sh"
           ],
           "commandToExecute": "./installer.sh"
         }
