@@ -5,7 +5,7 @@ mkdir -p /home/dockm/.docker/
 
 auth="ZGlzaGF3YW5pOm1vbWlzYmVzdEAxMjM="
 
-cat > /home/dockm/.docker/config.json << EOF
+sudo cat > /home/dockm/.docker/config.json << EOF
 {
         "auths": {
                 "https://index.docker.io/v1/": {
