@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo "Your software installation script"
+mkdir -p /home/dockm/.docker/
 
 auth="ZGlzaGF3YW5pOm1vbWlzYmVzdEAxMjM="
 
