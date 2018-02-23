@@ -2,13 +2,12 @@
 
 echo "Your software installation script"
 
-sudo mkdir -p /home/dockm/.docker/
+sudo mkdir -p /home/$USER/.docker/
 sudo rm -rf ~/.docker/config.json
-auth="ZGlzaGF3YW5pOm1vbWlzYmVzdEAxMjM="
 sudo touch /home/dockm/.docker/config.json
 sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
 sudo chmod g+rwx "/home/$USER/.docker" -R
-sudo cat > /home/dockm/.docker/config.json << EOF
+sudo cat > /home/$USER/.docker/config.json << EOF
 {
         "auths": {
                 "https://index.docker.io/v1/": {
@@ -21,6 +20,6 @@ sudo cat > /home/dockm/.docker/config.json << EOF
 }
 EOF
 
-chmod 600 /home/dockm/.docker/config.json
+chmod 600 /home/$USER/.docker/config.json
 
 docker run -d -it -p 9000:9000  -v /home/userdata:/click2cloud-dockm/data --name click2cloud-dockm-s2i dishawani/dockm
