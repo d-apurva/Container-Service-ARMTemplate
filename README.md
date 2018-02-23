@@ -1,4 +1,8 @@
-## **Deploying Docker Swarm Cluster**
+
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FClick2Cloud%2FDayPlannerApp%2Fmaster%2Fdeploy%2Fazuredeploy.json" target="_blank">
+      <img src="http://azuredeploy.net/deploybutton.png"/>
+</a>
+
 
 - Enter your Azure account portal, and click on the ( **+** ) button, and search for **Template deployment**.
 
