@@ -4,9 +4,30 @@
   "parameters": {
     "sshPublicKey": {
       "type": "securestring",
-      "defaultValue": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCnrkFTQTHq2ywcJ9N01VECKA8Qn1Gzzl6xlMsvCqDdg4VEZMxOPtALe+m2nACeiosdGacL4NiCej3zbwV4Ah8lr+kiGgmW4wVFLB03E5cNSUJYkFVECBP14RkDtQ60DCid1wpu1n1hdE7PfatFIyxLrsUFbMUwVvpJuCsCP72XIW+1Sybtzr5tBgyqiZZ425JbIRe/xJhPtyGs7NEZDYmMjJ9IBjJJR0gCiEC330vUlwD9iUd7lhy3N2n57Cj8CNrkUPo9kXJwMDdXOv0zmLtEhZJBitjoV2+b/ZgNfYlK1h3hTPqjmEskzbhnPkmqs435OoZDsIQBr9a0vy/HL5PH apurva@WSD024-Apurva",
+      "defaultValue": "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAmjfbj7nCsOalAmx7ed2jOPIgRpML/Vf8lIgfAeygw8NoQNU+IDs93werYmfPVeBepH+cbPKXL6eW01Duxpc50wyq/uo+USDl5cSSMD6x5Mf6YDQ1eAbv+EnvuExdtGWBrLwtBb2qPigP0UYCoR11bQIPvp48m++5hut4RxczPze2sGtqbo4vpBjgu5iM+DRZ55qOs4DTxAkxW1bnb3pGIcoI0I8uTG+A5zOW+QaEjCK9tlC+ax6E/QVtjpYl9dAgAZgRNoLZmb591912nSb/e0SyL9ug8qR8NDLhtIipH1dSkhL6IDLfASs8vUXg/cRebOlhYOnqzD5ZPFdoag2x3Q== rsa-key-20180222",
       "metadata": {
         "description": "SSH public key for the Virtual Machines."
+      }
+    },    
+    "installScript": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/d-apurva/Container-Service-ARMTemplate/master/installscript.sh",
+      "metadata": {
+        "description": "Installation script path"
+      }
+    },
+    "installCommand": {
+      "type": "string",
+      "defaultValue": "sh installscript.sh",
+      "metadata": {
+        "description": "Installation command"
+      }
+    },
+    "adminUsername": {
+      "type": "string",
+      "defaultValue": "dockm",
+      "metadata": {
+        "description": "Username to login"
       }
     },
     "nodeCount": {
@@ -24,8 +45,7 @@
     }
   },
   "variables": {
-    "masterCount": 1,
-    "adminUsername": "dockm",
+    "masterCount": 1,    
     "vmNameMaster": "swarm-master-",
     "vmNameNode": "swarm-node-",
     "vmSizeMaster": "Standard_DS2_v2",
@@ -62,7 +82,7 @@
     "nodesLbName": "swarm-lb-nodes",
     "nodesLbID": "[resourceId('Microsoft.Network/loadBalancers',variables('nodesLbName'))]",
     "nodesLbBackendPoolName": "swarm-nodes-pool",
-    "sshKeyPath": "[concat('/home/', variables('adminUsername'), '/.ssh/authorized_keys')]",
+    "sshKeyPath": "[concat('/home/', parameters('adminUsername'), '/.ssh/authorized_keys')]",
     "consulServerArgs": [
       "-advertise 10.0.0.4 -bootstrap"
     ],
@@ -461,7 +481,7 @@
         },
         "osProfile": {
           "computerName": "[concat(variables('vmNameMaster'), copyIndex())]",
-          "adminUsername": "[variables('adminUsername')]",
+          "adminUsername": "[parameters('adminUsername')]",
           "linuxConfiguration": {
             "disablePasswordAuthentication": "true",
             "ssh": {
@@ -521,7 +541,7 @@
         },
         "osProfile": {
           "computerName": "[concat(variables('vmNameNode'), copyIndex())]",
-          "adminUsername": "[variables('adminUsername')]",
+          "adminUsername": "[parameters('adminUsername')]",
           "linuxConfiguration": {
             "disablePasswordAuthentication": "true",
             "ssh": {
@@ -659,9 +679,9 @@
         "typeHandlerVersion": "1.2",
         "settings": {
           "fileUris": [
-            "https://raw.githubusercontent.com/d-apurva/Container-Service-ARMTemplate/master/installer.sh"
+            "[parameters('installScript')]"
           ],
-          "commandToExecute": "./installer.sh"
+          "commandToExecute": "[concat(parameters('installCommand'), ' ', resourceGroup().location, ' ', parameters('clusterName'))]"
         }
       }
     }
@@ -669,7 +689,7 @@
   "outputs": {
     "sshTunnelCmd": {
       "type": "string",
-      "value": "[concat('ssh -L 2375:swarm-master-0:2375 -N ', variables('adminUsername'), '@', reference(variables('managementPublicIPAddrName')).dnsSettings.fqdn, ' -p 2200')]"
+      "value": "[concat('ssh -L 2375:swarm-master-0:2375 -N ', parameters('adminUsername'), '@', reference(variables('managementPublicIPAddrName')).dnsSettings.fqdn, ' -p 2200')]"
     },
     "dockerCmd": {
       "type": "string",
@@ -681,7 +701,7 @@
     },
     "sshMaster0": {
       "type": "string",
-      "value": "[concat('ssh ', variables('adminUsername'), '@', reference(variables('managementPublicIPAddrName')).dnsSettings.fqdn, ' -A -p 2200')]"
+      "value": "[concat('ssh ', parameters('adminUsername'), '@', reference(variables('managementPublicIPAddrName')).dnsSettings.fqdn, ' -A -p 2200')]"
     }
   }
 }
