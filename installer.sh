@@ -3,14 +3,16 @@
 echo "Your software installation script"
 
 sudo mkdir -p /home/dockm/.docker/
-rm -rf ~/.docker/config.json
+sudo rm -rf ~/.docker/config.json
 auth="ZGlzaGF3YW5pOm1vbWlzYmVzdEAxMjM="
-# sudo chown $(whoami):docker /home/$(whoami)/.docker/config.json
+sudo touch /home/dockm/.docker/config.json
+sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
+sudo chmod g+rwx "/home/$USER/.docker" -R
 sudo cat > /home/dockm/.docker/config.json << EOF
 {
         "auths": {
                 "https://index.docker.io/v1/": {
-                        "auth": "$auth"
+                        "auth": "ZGlzaGF3YW5pOm1vbWlzYmVzdEAxMjM="
                 }
         },
         "HttpHeaders": {
