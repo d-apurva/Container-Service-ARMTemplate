@@ -4,7 +4,6 @@ echo "Your software installation script"
 
 sudo mkdir -p /home/$USER/.docker/
 sudo rm -rf ~/.docker/config.json
-sudo touch /home/dockm/.docker/config.json
 sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
 sudo chmod g+rwx "/home/$USER/.docker" -R
 sudo cat > /home/$USER/.docker/config.json << EOF
