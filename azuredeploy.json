@@ -9,6 +9,20 @@
         "description": "SSH public key for the Virtual Machines."
       }
     },    
+    "installScript": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/d-apurva/Container-Service-ARMTemplate/master/installscript.sh",
+      "metadata": {
+        "description": "Installation script path"
+      }
+    },
+    "installCommand": {
+      "type": "string",
+      "defaultValue": "sh installscript.sh",
+      "metadata": {
+        "description": "Installation command"
+      }
+    },
     "adminUsername": {
       "type": "string",
       "defaultValue": "dockm",
@@ -663,8 +677,11 @@
         "publisher": "Microsoft.OSTCExtensions",
         "type": "CustomScriptForLinux",
         "typeHandlerVersion": "1.2",
-        "settings": {          
-          "commandToExecute": "docker run -d -it -p 9000:9000  -v /home/userdata:/click2cloud-dockm/data -v /var/run/docker.sock:/var/run/docker.sock:z --name click2cloud-dockm-s2i click2cloud/helloworldapp"
+        "settings": {
+        "fileUris": [
+            "[parameters('installScript')]"
+          ],
+          "commandToExecute": "[parameters('installCommand')]"
         }
       }
     }
